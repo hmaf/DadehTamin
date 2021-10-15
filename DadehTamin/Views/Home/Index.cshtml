@@ -1,0 +1,295 @@
+﻿@model Customer
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>*@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link href="~/BootstrapRtl/css/bootstrap-rtl.css" rel="stylesheet" />
+    <link href="~/css/site.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container">
+        <a class="btn btn-success new" id="create">جدید</a>
+        @*<form method="get" action="/Home/List">
+        <input type="hidden" id="pageid" name="page" value="@ViewBag.page.ToString()"/>*@
+        <table class="table table-bordered text-center" id="table">
+            <thead>
+                <tr>
+                    <th class="text-center">نام</th>
+                    <th class="text-center">نام خانوادگی</th>
+                    <th class="text-center">تاریخ تولد</th>
+                    <th class="text-center">محل تولد</th>
+                    <th class="text-center">تعداد فرزند</th>
+                    <th class="text-center">دستورات</th>
+                </tr>
+            </thead>
+            <tbody class="tbody">
+
+                @*@foreach (var item in Model)
+
+
+                        <td>@item.Name</td>
+                    <td>@item.Family</td>
+                    <td>@item.BirthDate</td>
+                    <td>@item.City</td>
+                    <td>@item.Child</td>
+                    <td id="td">
+                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Customer_Id">ویرایش</a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Customer_Id">حذف</a>
+                    </td>
+
+
+                }*@
+            </tbody>
+        </table>
+        @*</form>*@
+        
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
+                    <ul class="pagination">
+
+                        @for (int i = 1; i <= (int)ViewBag.pageCount; i++)
+                        {
+
+
+                            <li class="paginate_button aria-controls="dataTables-example" tabindex="0">
+                                <a onclick="changePage(@i)">@i</a>
+                            </li>
+                        }
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <section class="main-content-w3layouts-agileits test" id="open">
+            <div class="container">
+                <div class="inner-sec">
+                    <div class="login p-5 bg-light mx-auto mw-100">
+                        <form method="post">
+                            <input name="Customer_Id" id="customerid" type="hidden" />
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationCustom01">نام</label>
+
+                                    <input name="Name" type="text" class="form-control" id="name" required="">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="validationCustom02">نام خانوادگی</label>
+                                    <input name="Family" type="text" class="form-control" id="family" required="">
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-4">
+                                    <label for="exampleInputPassword1 mb-2">تاریخ تولد</label>
+                                    <input name="BirthDate" type="datetime" class="form-control" id="birthdate" required="">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label name="City">محل تولد</label>
+                                    <input type="text" class="form-control" name="City" id="city" required="">
+                                    <span class="text-danger"></span>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label for="validationCustom02">تعداد فرزند</label>
+                                    <input name="Child" type="text" class="form-control" id="child" required="">
+                                    <span class="text-danger"></span>
+                                </div>
+                            </div>
+
+
+
+
+
+                            <button type="submit" class="btn btn-primary col-md-4" id="submit">ثبت</button>
+                            <button type="button" class="btn btn-primary col-md-4" id="btnUpdate" onclick="editData()">ویرایش</button>
+                        </form>
+
+
+                    </div>
+                </div>
+            </div>
+            <br />
+
+        </section>
+    </div>
+    
+    <script>
+        $(document).ready(function () {
+            showData();
+
+
+            $("#create").click(function () {
+                $("#open").css("visibility", "visible");
+                $("#btnUpdate").hide();
+                $("#submit").show();
+            });
+            
+                $("#submit").click(function (e) {
+                    e.preventDefault();
+                    e.stopImmediatePropagation();
+                    var res = {
+                        Name: $("#name").val(),
+                        Family: $("#family").val(),
+                        BirthDate: $("#birthdate").val(),
+                        City: $("#city").val(),
+                        Child: $("#child").val(),
+                    };
+                    $.ajax({
+                        type: "POST",
+                        url: "/Home/Create",
+                        data: res,
+                        success: function (msg) {
+                            $("#open").css("visibility", "hidden");
+                            showData();
+                            $("#name").val("");
+                            $("#family").val("");
+                            $("#birthdate").val("");
+                            $("#city").val("");
+                            $("#child").val("");
+                        },
+                        error: function (XMLHttpRequest, textStatus, errorThrown) {
+                            alert("some error");
+                        }
+
+                    });
+                });
+            
+            
+                
+        });
+        
+        function editData() {
+            alert("نتیجه ارسال null بر می گردد");
+            var res = {
+                Customer_Id: $('#customerid').val(),
+                Name: $('#name').val(),
+                Family: $('#family').val(),
+                BirthDate: $('#birthdate').val(),
+                City: $('#city').val(),
+                Child: $('#child').val(),
+            };
+            $.ajax({
+                url: "/Home/Update",
+                type: "POST",
+                data: JSON.stringify(res),
+                contentType: "application/json;charset=utf-8",
+                dataType: 'json',
+                success: function (msg) {
+                    $("#open").css("visibility", "hidden");
+                    showData();
+                    $("#customerid").val("");
+                    $("#name").val("");
+                    $("#family").val("");
+                    $("#birthdate").val("");
+                    $("#city").val("");
+                    $("#child").val("");
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("some error");
+                }
+
+            });
+            
+        }
+
+        function showData() {
+
+
+            $.ajax({
+                url: "/Home/List",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: 'json',
+                success: function (result) {
+                    var html = '';
+                    $.each(result, function (key, item) {                  
+                        html += '<tr>';
+                        html += '<td>' + item.Name + '</td>';
+                        html += '<td>' + item.Family + '</td>';
+                        html += '<td>' + item.BirthDate + '</td>';
+                        html += '<td>' + item.City + '</td>';
+                        html += ' <td>' + item.Child + '</td>';
+                        html += '<td> <a class="btn btn-info" onclick=(getId(' + item.Customer_Id + '))> ویرایش</a> <a class="btn btn-danger" onclick=(deleteFunction(' + item.Customer_Id + '))> حذف</a></td>';
+
+                        html += '</tr>';
+                    });
+                    $('.tbody').html(html);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function getId(id) {
+            $("#open").css("visibility", "visible");
+            $.ajax({
+                url: "/Home/GetId/"+id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: 'json',
+                success: function (result) {
+                    $("#open").css("visibility", "visible");
+                    $("#submit").hide();
+                    $("#btnUpdate").show();
+                    $("#customerid").val(result.Customer_Id);
+                    $("#name").val(result.Name);
+                    $("#family").val(result.Family);
+                    $("#birthdate").val(result.BirthDate);
+                    $("#city").val(result.City);
+                    $("#child").val(result.Child);
+                    
+                },
+                error: function (error) {
+                    alert(error);
+                }
+            });
+            return false;
+        }
+        
+        function deleteFunction(id) {
+            $.ajax({
+                url: "/Home/Delete/" + id,
+                type: "POST",
+                success: function (result) {
+                    showData();
+                },
+                error: function (error) {
+                    alert("در حذف با مشکل رو به رو شدیم");
+                }
+
+            });
+        }
+
+        function changePage(page) {
+            
+            
+            $.ajax({
+                url: "/Home/List/" + page,
+                type: "POST",
+                success: function (result) {
+                    
+                    alert("در صفحه بندی با مشکل برخوردم");
+
+                },
+                error: function (error) {
+                    alert("در صفحه بندی با مشکل برخوردم");
+                }
+            });
+
+        }
+    </script>
+</body>
+</html>
