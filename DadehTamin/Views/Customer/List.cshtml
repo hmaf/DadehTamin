@@ -1,0 +1,18 @@
+﻿@model List<Customer>
+    
+@foreach (var item in Model)
+{
+    <tr>
+        <td>@item.Name</td>
+        <td>@item.Family</td>
+        <td>@item.BirthDate.ToString("d")</td>
+        <td>@item.City</td>
+        <td>@item.Child</td>
+        <td>
+            <a onclick="remove(@item.Customer_Id)" class="btn btn-danger" >حذف</a>
+            <a class="btn btn-info" href="/Customer/Update/@item.Customer_Id">ویرایش</a>
+        </td>
+        
+    </tr>
+}
+

@@ -18,8 +18,7 @@
 <body>
     <div class="container">
         <a class="btn btn-success new" id="create">جدید</a>
-        @*<form method="get" action="/Home/List">
-        <input type="hidden" id="pageid" name="page" value="@ViewBag.page.ToString()"/>*@
+        <a dir="rtl" asp-action="Index" asp-controller="Customer" class="btn btn-info">رفتن به بخش جدید</a>
         <table class="table table-bordered text-center" id="table">
             <thead>
                 <tr>
@@ -33,24 +32,10 @@
             </thead>
             <tbody class="tbody">
 
-                @*@foreach (var item in Model)
-
-
-                        <td>@item.Name</td>
-                    <td>@item.Family</td>
-                    <td>@item.BirthDate</td>
-                    <td>@item.City</td>
-                    <td>@item.Child</td>
-                    <td id="td">
-                        <a class="btn btn-info" asp-action="Edit" asp-route-id="@item.Customer_Id">ویرایش</a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Customer_Id">حذف</a>
-                    </td>
-
-
-                }*@
+                
             </tbody>
         </table>
-        @*</form>*@
+       
         
         <div class="row">
             <div class="col-sm-6">

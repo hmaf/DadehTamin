@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="Views\Customer\Index.cshtml" />
     <None Include="Views\Home\Index.cshtml" />
   </ItemGroup>
 
