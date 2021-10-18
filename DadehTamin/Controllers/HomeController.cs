@@ -23,8 +23,9 @@ namespace DadehTamin.Controllers
             _context = context;
         }
 
-        public IActionResult Index(int page=1)
+        public IActionResult Index(int page = 1)
         {
+            
             var res = _context.Customers.ToList();
             int take = 8;
             int skip = (page - 1) * take;
@@ -38,11 +39,11 @@ namespace DadehTamin.Controllers
             return View();
         }
         [HttpGet]
-        public JsonResult List(int page=1)
+        public JsonResult List(int? page=1)
         {
             var res = _context.Customers.ToList();
             int take = 6;
-            int skip = (page - 1) * take;
+            int skip = (int)(page - 1) * take;
             int pageCount = res.Count / take;
             //var s = _context.Customers.Where(a=>a.Customer_Id==skip);
             List<Customer> customer = res.Skip(skip).Take(take).ToList();
@@ -67,7 +68,8 @@ namespace DadehTamin.Controllers
         [HttpPost]
         public JsonResult Update(Customer c)
         {
-            
+            _context.Customers.Update(c);
+            _context.SaveChanges();
             return Json("ok");
         }
        

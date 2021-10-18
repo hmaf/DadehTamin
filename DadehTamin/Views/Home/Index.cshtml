@@ -13,6 +13,7 @@
     @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>*@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link href="~/BootstrapRtl/css/bootstrap-rtl.css" rel="stylesheet" />
+    <link href="https://pagination.js.org/dist/2.1.5/pagination.min.js" rel="stylesheet" />
     <link href="~/css/site.css" rel="stylesheet" />
 </head>
 <body>
@@ -47,7 +48,7 @@
 
 
                             <li class="paginate_button aria-controls="dataTables-example" tabindex="0">
-                                <a onclick="changePage(@i)">@i</a>
+                                <a id="pageination" onclick="changePage(@i)">@i</a>
                             </li>
                         }
 
@@ -55,13 +56,13 @@
                 </div>
             </div>
         </div>
-
+        <div id="demo"></div>
 
         <section class="main-content-w3layouts-agileits test" id="open">
             <div class="container">
                 <div class="inner-sec">
                     <div class="login p-5 bg-light mx-auto mw-100">
-                        <form method="post">
+                        <form id="Myform" method="post">
                             <input name="Customer_Id" id="customerid" type="hidden" />
                             <div class="form-row">
                                 <div class="col-md-6 mb-3">
@@ -111,10 +112,11 @@
         </section>
     </div>
     
-    <script>
+    <script type="text/javascript">
         $(document).ready(function () {
-            showData();
-
+            
+           showData();
+            
 
             $("#create").click(function () {
                 $("#open").css("visibility", "visible");
@@ -153,42 +155,30 @@
                 });
             
             
-                
+            
         });
-        
-        function editData() {
-            alert("نتیجه ارسال null بر می گردد");
-            var res = {
-                Customer_Id: $('#customerid').val(),
-                Name: $('#name').val(),
-                Family: $('#family').val(),
-                BirthDate: $('#birthdate').val(),
-                City: $('#city').val(),
-                Child: $('#child').val(),
-            };
+        $("#btnUpdate").click(function () {
             $.ajax({
-                url: "/Home/Update",
+                url: "/Home/Update" ,
                 type: "POST",
-                data: JSON.stringify(res),
-                contentType: "application/json;charset=utf-8",
-                dataType: 'json',
-                success: function (msg) {
+                data: $("#Myform").serialize(),
+                success: function (result) {
                     $("#open").css("visibility", "hidden");
                     showData();
-                    $("#customerid").val("");
                     $("#name").val("");
                     $("#family").val("");
                     $("#birthdate").val("");
                     $("#city").val("");
                     $("#child").val("");
                 },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    alert("some error");
+                error: function (error) {
+                    alert("در حذف با مشکل رو به رو شدیم");
                 }
 
             });
             
-        }
+        });
+        
 
         function showData() {
 
@@ -258,23 +248,30 @@
             });
         }
 
-        function changePage(page) {
-            
-            
+        $("#pageination").click(function () {
+            var s= $("#pageination").val();
+            alert(s);
+
             $.ajax({
-                url: "/Home/List/" + page,
+                url: "/Home/List/" + s,
                 type: "POST",
+
                 success: function (result) {
-                    
-                    alert("در صفحه بندی با مشکل برخوردم");
+                    showData();
+                    alert("در");
 
                 },
                 error: function (error) {
                     alert("در صفحه بندی با مشکل برخوردم");
                 }
             });
+        });
+            
+            
 
-        }
+       
+
+        
     </script>
 </body>
 </html>
