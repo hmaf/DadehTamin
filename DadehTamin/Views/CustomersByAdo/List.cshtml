@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Customer>
+
+   
+
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Family</td>
+            <td>@item.BirthDate.ToString("d")</td>
+            <td>@item.City</td>
+            <td>@item.Child</td>
+            <td>
+                <a class="btn btn-info">ویرایش</a>
+                <a class="btn btn-danger" onclick="Delete(@item.Customer_Id)">حذف</a>
+            </td>
+        </tr>
+    }

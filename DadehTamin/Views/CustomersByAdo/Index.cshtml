@@ -1,0 +1,130 @@
+﻿
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+
+<link href="~/BootstrapRtl/css/bootstrap-rtl.css" rel="stylesheet" />
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link href="~/css/site.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <a class="btn btn-success" id="create">عضو جدید</a>
+    <br />
+    <table class="table table-borderless table-dark">
+        <thead>
+            <tr>
+                <th>نام</th>
+                <th>نام خانوادگی</th>
+                <th>تاریخ تولد</th>
+                <th>محل تولد</th>
+                <th>تعداد فرزند</th>
+                <th>دستورات</th>
+            </tr>
+        </thead>
+        <tbody id="mytable">
+        </tbody>
+
+    </table>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate">
+                <ul class="pagination">
+
+                    @for (int i = 1; i <= (ViewBag.pageCount + 1); i++)
+                    {
+                        <li class="paginate_button aria-controls="dataTables-example" tabindex="0">
+                            <a id="pageination" onclick="changePage(@i)">@i</a>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <section class="main-content-w3layouts-agileits test" id="open">
+        <div class="container">
+            <div class="inner-sec">
+                <div class="login p-5 bg-light mx-auto mw-100">
+                    <form method="post" id="myform">
+
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom01">نام</label>
+
+                                <input name="Name" type="text" class="form-control" id="name" required="">
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="validationCustom02">نام خانوادگی</label>
+                                <input name="Family" type="text" class="form-control" id="family" required="">
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label for="exampleInputPassword1 mb-2">تاریخ تولد</label>
+                                <input name="BirthDate" type="datetime" class="form-control" id="birthdate" required="">
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label name="City">محل تولد</label>
+                                <input type="text" class="form-control" name="City" id="city" required="">
+                                <span class="text-danger"></span>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="validationCustom02">تعداد فرزند</label>
+                                <input name="Child" type="text" class="form-control" id="child" required="">
+                                <span class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary col-md-4" id="submit">ثبت</button>
+                    </form>
+
+
+                </div>
+            </div>
+        </div>
+        <br />
+
+    </section>
+    <script>
+        $(document).ready(function () {
+            List();
+        });
+
+        function List() {
+            $("#mytable").load("/CustomersByAdo/List")
+        }
+
+        function changePage(pageid) {
+
+            $.get("/CustomersByAdo/List", { pageid: pageid }, function (data) {
+                $("#mytable").html(data);
+            });
+
+
+        }
+
+        $("#create").click(function () {
+            $("#open").css("visibility", "visible");
+            $("#open").toggle();
+        });
+
+        function Delete(id) {
+            $.post("@Url.Action("Delete", "CustomersByAdo")", { id: id });
+            List();
+        }
+
+        $("#submit").click(function () {
+            $.post("@Url.Action("Create", "CustomersByAdo")", $("#myform").serialize(), function (data) {
+                $("#mytable").html(data);
+            });
+            });
+    </script>
