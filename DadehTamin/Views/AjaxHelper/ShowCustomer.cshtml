@@ -1,0 +1,47 @@
+﻿@model Tuple<List<Customer>, int>
+@{
+    ViewData["Title"] = "ShowCustomer";
+    Layout = null;
+}
+
+<table class="table table-bordered">
+    <thead>
+    <tr>
+        <td>نام</td>
+        <td>نام خانوادگی</td>
+        <td>تاریخ تولد</td>
+        <td>محل تولد</td>
+        <td>تعداد فرزند</td>
+        <td>دستورات</td>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Item1)
+    {
+
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Family</td>
+            <td>@item.BirthDate</td>
+            <td>@item.City</td>
+            <td>@item.Child</td>
+            <td>
+                <a class="btn btn-primary" >ویرایش</a>
+                <a class="btn btn-danger">حذف</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        
+        @for (int i = 1; i <= (@Model.Item2)+1; i++)
+        {
+            <li class="page-item"><a class="page-link" onclick="changePage(@i)">@i</a></li>
+        }
+        
+    </ul>
+</nav>

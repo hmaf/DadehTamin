@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DadehTamin_Core.Services;
 using DadehTamin_DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,6 +32,8 @@ namespace DadehTamin
                 });
             services.AddControllersWithViews();
            services.AddMvc().AddNewtonsoftJson();
+
+           services.AddTransient<ICustomerServiece, CustomerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

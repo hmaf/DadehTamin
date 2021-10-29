@@ -1,0 +1,79 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using DadehTamin_Core.DTOs.Customer
+@model CustomerViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+
+<div class="container">
+    <br />
+    <a class="btn btn-success" id="create">افزودن</a>
+    <br />
+    <br />
+    <div id="list">
+
+    </div>
+    <div class="form-group" id="form" style="display:none">
+        <form asp-controller="AjaxHelper" asp-action="ShowCustomer"
+              data-ajax="true"
+              data-ajax-method="post"
+              data-ajax-mode="replace"
+              data-ajax-update="#list"
+              data-ajax-success="Success">
+            <input type="hidden" asp-for="Customer_Id" />
+            <div class="alert alert-danger>
+                <span asp-validation-for="all"></span>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom01" asp-for="Name"></label>
+                    <input asp-for="Name" type="text" class="form-control" id="name">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom02" asp-for="Family"></label>
+                    <input asp-for="Family" type="text" class="form-control" id="family">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom02" asp-for="BirthDate"></label>
+                    <input asp-for="BirthDate" type="text" class="form-control" id="family">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom02" asp-for="City"></label>
+                    <input asp-for="City" type="text" class="form-control" id="family">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationCustom02" asp-for="Child"></label>
+                    <input asp-for="Child" type="text" class="form-control" id="family">
+                </div>
+                <div class="col-md-6 mb-3">
+
+                    <button style="margin-top:25px" type="submit" class="btn btn-primary form-control">ثبت</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<link href="~/BootstrapRtl/css/bootstrap-rtl.css" rel="stylesheet" />
+<script>
+    <script src="~/js/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    
+</script>
+    <script>
+        $(function(){
+            $("#list").load("/AjaxHelper/ShowCustomer");
+        });
+        function changePage(id){
+            $("#list").load("/AjaxHelper/ShowCustomer?pageid=" + id);
+        }
+        $("#create").click(function(){
+            $("#form").toggle();
+        
+        });
+    </script>
